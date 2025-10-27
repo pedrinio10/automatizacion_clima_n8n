@@ -1,0 +1,111 @@
+{
+  "name": "Clima Córdoba - Automatización",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://api.openweathermap.org/data/2.5/weather?q=Cordoba,AR&appid=c506b3ccaa8e57e1908a35c5eeb57d22&units=metric&lang=es",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        384,
+        0
+      ],
+      "id": "25a9aeb5-16d8-4fd6-bd9d-fcfc8ce2c3c8",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "sendTo": "pedroperez.arr@gmail.com",
+        "subject": "clima actual de cordoba",
+        "message": "=<div style=\"font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #0d1b2a, #1b263b); color: #f0f0f0; padding: 20px; border-radius: 10px; max-width: 520px; margin: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.4);\">\n  <h2 style=\"text-align: center; color: #00b4d8;\">🌦️ Clima actual en Córdoba</h2>\n  \n  <div style=\"text-align: center; font-size: 2.5rem; margin: 15px 0;\">\n    {{\n      $json[\"weather\"][0][\"main\"] === \"Clear\" ? \"☀️\" :\n      $json[\"weather\"][0][\"main\"] === \"Clouds\" ? \"☁️\" :\n      $json[\"weather\"][0][\"main\"] === \"Rain\" ? \"🌧️\" :\n      $json[\"weather\"][0][\"main\"] === \"Drizzle\" ? \"🌦️\" :\n      $json[\"weather\"][0][\"main\"] === \"Thunderstorm\" ? \"⛈️\" :\n      $json[\"weather\"][0][\"main\"] === \"Snow\" ? \"❄️\" :\n      \"🌫️\"\n    }}\n  </div>\n\n  <div style=\"background-color: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin-top: 10px;\">\n    <p><strong>🌡 Temperatura:</strong> {{ $json[\"main\"][\"temp\"] }} °C</p>\n    <p><strong>💧 Humedad:</strong> {{ $json[\"main\"][\"humidity\"] }} %</p>\n    <p><strong>🌬 Viento:</strong> {{ $json[\"wind\"][\"speed\"] }} km/h</p>\n    <p><strong>📋 Condición:</strong> {{ $json[\"weather\"][0][\"description\"] }}</p>\n  </div>\n\n  <p style=\"text-align: center; color: #90e0ef; margin-top: 20px;\">\n    Automatizado por <strong>n8n</strong> 🚀<br>\n    <em>Datos proporcionados por OpenWeatherMap</em>\n  </p>\n</div>\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        608,
+        0
+      ],
+      "id": "1cfed2be-ae1b-40fd-b9ea-a38bab9b4fdd",
+      "name": "Send a message",
+      "webhookId": "318b9b25-aa77-4554-aa81-24deabc29b88",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "piDRxPdl5FwJSIW0",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        160,
+        0
+      ],
+      "id": "7cd90de7-329b-4cdb-944b-a5d6e46e5010",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "content": "Automatizacion de informacion el clima a traves de mensaje por gmail",
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        336,
+        -272
+      ],
+      "id": "05c1d8e6-914f-420d-b271-6b7e5c17334e",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a6b5ce61-0d01-412a-ab9e-fa569209372c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5cc0f4c16b936ee9c3be1f32afe5293166dd99aa652b31a17ee47503922ced7f"
+  },
+  "id": "RqjFL0Or4zwdTnh4",
+  "tags": []
+}
