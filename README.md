@@ -1,3 +1,5 @@
+![Banner del proyecto](banner.png)
+
 # 🌤 Automatización del Clima con n8n y OpenWeather
 
 Este flujo de **n8n** obtiene el clima actual de Córdoba (Argentina) usando la API de **OpenWeatherMap**, y envía un correo automático todos los días a las 8:00 AM con los datos del tiempo actualizados.
